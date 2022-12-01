@@ -33,7 +33,7 @@ python ./mochila.py Seed Número_Iteraciones Tau Archivo_entrada
 
 ## Ejemplo
 ```
-python.exe .\mochila.py 1 4 1.4 mochila.txt
+python.exe .\mochila.py 1 200 1.4 mochila.txt
 ```
 
 
