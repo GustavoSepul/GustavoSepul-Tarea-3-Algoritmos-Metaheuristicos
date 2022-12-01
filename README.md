@@ -28,12 +28,12 @@ python ./mochila.py Seed Número_Iteraciones Tau Archivo_entrada
 - Donde:
     - ***Seed***, el cuál sera un número real randomico mayor a 0.
     - ***Número_Iteraciones***, el cuál sera un número entero a criterio del usuario.
-    - ***Tau***, el cuál sera un número entero entre 0 y 100 (10%).
-    - ***Archivo_entrada***, nombre del archivo con las coordenadas de los puntos (mochila.txt).
+    - ***Tau***, el cuál sera un número real.
+    - ***Archivo_entrada***, nombre del archivo con los valores y pesos de prueba (Prueba1.txt).
 
 ## Ejemplo
 ```
-python.exe .\mochila.py 1 4 5 mochila.txt
+python.exe .\mochila.py 1 4 1.4 mochila.txt
 ```
 
 
@@ -48,7 +48,3 @@ python.exe .\mochila.py 1 4 5 mochila.txt
 * Diego Araneda Hidalgo - daranedah@ing.ucsc.cl
 * Gustavo Sepulveda Ocampo - gsepulvedao@ing.ucsc.cl
 * Javier Victoriano Rivas - jvictoriano@ing.ucsc.cl
-
-
-
-
