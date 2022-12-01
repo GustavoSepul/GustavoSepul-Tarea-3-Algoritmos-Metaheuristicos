@@ -17,7 +17,7 @@
  ```
  pip install pandas
  ```
- * Para bajar el programa haga click en el siguiente [Link](https://github.com/GustavoSepul/Tarea-2-Algoritmos-Metaheuristicos/archive/refs/heads/main.zip)
+ * Para bajar el programa haga click en el siguiente [Link](https://github.com/GustavoSepul/Tarea-3-Algoritmos-Metaheuristicos/archive/refs/heads/main.zip)
 
 ## Ejecución del programa
 
