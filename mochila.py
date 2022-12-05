@@ -42,11 +42,24 @@ print(n)
 print(c)
 print(z)
 
-while True:
-    mejor_solucion = np.random.randint(2, size=n)
-    aux = 0
-    for i  in range(n):
-        aux += datos[i][1]*mejor_solucion[i]
-    print(aux)
-    if(aux <= c):
-        break
+solucion = np.random.randint(2, size=n)
+aux = 0
+for i  in range(n):
+    aux += (datos[i][1])*solucion[i]
+print(solucion)
+if(aux <= c):
+    mejor_solucion = solucion
+else:
+    mejor_solucion = solucion
+    mejor_solucion = np.zeros(n,dtype=int)
+
+fitness = np.zeros((n,2))
+
+for j in range(n):
+    fitness[j][0] = datos[j][0]/datos[j][1]
+    fitness[j][1] = j
+print(fitness)
+generacion = 0
+while generacion<Iteraciones:
+    print(generacion)
+    generacion+=1
