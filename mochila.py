@@ -3,13 +3,15 @@ import pandas as pd
 import sys 
 import time
 
-if len(sys.argv) == 4:
+if len(sys.argv) == 5:
     Seed = int(sys.argv[1])
     Iteraciones = int(sys.argv[2])
     Tau = float(sys.argv[3])
+    Archivo_entrada = str(sys.argv[4])
     print('Semilla: ', Seed)
     print('Numero iteraciones: ', Iteraciones)
     print('Tau: ', Tau)
+    print('Matriz: ', Archivo_entrada)
 
     if(Seed < 0):
         print("Error: El número de la semilla debe ser positivo\nIngrese un número de semilla positivo")
@@ -19,10 +21,45 @@ if len(sys.argv) == 4:
         sys.exit(0)
 else:
     print("Error: Los datos ingresados no son validos, ingrese los datos de la siguiente manera:")
-    print("python.exe .\Reinas.py Seed Número_Iteraciones Tau Archivo_Entrada")
+    print("python.exe .\mochila.py Seed Número_Iteraciones Tau Archivo_Entrada")
     sys.exit(0)
 
 
 np.random.seed(Seed)
-mejor_solucion = np.arange(0,5)
-print(mejor_solucion)
+
+
+datos = pd.read_table(Archivo_entrada, header = None,delim_whitespace=True, skiprows=5, skipfooter=0, engine='python')
+datos = datos.drop(columns=3)
+datos = datos.drop(columns =0,axis=1).to_numpy()
+
+datos2 = pd.read_table(Archivo_entrada, header = None,delim_whitespace=True, skiprows=1, nrows=3, engine='python')
+datos2 = datos2.drop(columns =0,axis=1).to_numpy()
+print(datos)
+n = datos2[0][0]
+c = datos2[1][0]
+z = datos2[2][0]
+print(n)
+print(c)
+print(z)
+
+solucion = np.random.randint(2, size=n)
+aux = 0
+for i  in range(n):
+    aux += (datos[i][1])*solucion[i]
+print(solucion)
+if(aux <= c):
+    mejor_solucion = solucion
+else:
+    mejor_solucion = solucion
+    mejor_solucion = np.zeros(n,dtype=int)
+
+fitness = np.zeros((n,2))
+
+for j in range(n):
+    fitness[j][0] = datos[j][0]/datos[j][1]
+    fitness[j][1] = j
+print(fitness)
+generacion = 0
+while generacion<Iteraciones:
+    print(generacion)
+    generacion+=1
