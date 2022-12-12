@@ -90,7 +90,7 @@ while generacion<Iteraciones:
         if solucion[i] == 1: 
             fitOrd[i][0]= fitness[i][0]  
             fitOrd[i][1]= fitness[i][1]     
-    fitOrd = np.delete(fitOrd, np.where(fitOrd[:, 0] == 0)[0], axis=0)
+    # fitOrd = np.delete(fitOrd, np.where(fitOrd[:, 0] == 0)[0], axis=0)
     fitOrd = fitOrd[fitOrd[:, 0].argsort()]
     print(fitOrd)
     rulet = ruleta(n)
