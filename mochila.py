@@ -10,6 +10,7 @@ def ruleta(c):
     return aux
 
 
+
 if len(sys.argv) == 5:
     Seed = int(sys.argv[1])
     Iteraciones = int(sys.argv[2])
@@ -74,6 +75,11 @@ for i in range(n):
     vector_prob[i] = (i+1)**(-Tau)
 # print("PROB", vector_prob)
 
+auxx = 0 
+for q in range(n):
+    auxx += (datos[q][0])*mejor_solucion[q]
+mejor_valor = auxx
+
 generacion = 0
 
 while generacion<Iteraciones:
@@ -81,33 +87,50 @@ while generacion<Iteraciones:
     n=solucion.size
     fitOrd = np.zeros((n,2))
     for i in range(n):  
-        if solucion[i] == 1:   #1
-            fitOrd[i][0]= fitness[i][0]  #Agrega los fitnes de los items que no estan en mochila
-            fitOrd[i][1]= fitness[i][1]   #identificador del item         
+        if solucion[i] == 1: 
+            fitOrd[i][0]= fitness[i][0]  
+            fitOrd[i][1]= fitness[i][1]     
     fitOrd = np.delete(fitOrd, np.where(fitOrd[:, 0] == 0)[0], axis=0)
     fitOrd = fitOrd[fitOrd[:, 0].argsort()]
     print(fitOrd)
     rulet = ruleta(n)
     print(rulet)
     
-    aux=0
+    aux2=0
     listo = False
     giro = 0.0
     giro = np.random.rand()
     while listo==False:
-        if giro <= rulet[aux]:
+        if giro <= rulet[aux2]:
             listo = True
         else:
-            aux = aux+1  
-    itemSelec = aux
+            aux2 = aux2+1  
+    seleccionado = aux2
     print(giro)
-    print(itemSelec)
-    print("a",solucion)
-    if int(solucion[int(fitOrd[itemSelec][1])])==0:
-        solucion[int(fitOrd[itemSelec][1])]=1
+    print(seleccionado)
+    print("aa",solucion)
+    print("a",int(fitOrd[seleccionado][1]))
+    if int(solucion[int(fitOrd[seleccionado][1])])==0:
+        solucion[int(fitOrd[seleccionado][1])]=1
     else:
-        solucion[int(fitOrd[itemSelec][1])]=0
+        solucion[int(fitOrd[seleccionado][1])]=0
     print("b",solucion)
+
+    aux3 = 0
+    for i  in range(n):
+        aux3 += (datos[i][1])*solucion[i]
+    print(aux3)
+
+    auxx2 = 0 
+    for q in range(n):
+        auxx2 += (datos[q][0])*mejor_solucion[q]
+    valor = auxx2
+
+    if(aux3 <= c and valor>mejor_valor):
+        mejor_solucion = solucion
+
+
     generacion+=1
+print(mejor_solucion)
 # ruleta = ruleta(n)
 # print(ruleta)
