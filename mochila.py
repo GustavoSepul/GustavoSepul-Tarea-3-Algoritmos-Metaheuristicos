@@ -9,17 +9,6 @@ def ruleta(c):
     aux = np.cumsum(aux)
     return aux
 
-def funGirarRuleta(vR):
-    aux=0
-    listo = False
-    giro = 0.0
-    giro = np.random.rand()
-    while listo==False:
-        if giro <= vR[aux]:
-            listo = True
-        else:
-            aux = aux+1        
-    return aux     
 
 if len(sys.argv) == 5:
     Seed = int(sys.argv[1])
@@ -62,6 +51,7 @@ z = datos2[2][0]
 # print(z)
 
 solucion = np.random.randint(2, size=n)
+print(solucion)
 aux = 0
 for i  in range(n):
     aux += (datos[i][1])*solucion[i]
@@ -99,14 +89,25 @@ while generacion<Iteraciones:
     print(fitOrd)
     rulet = ruleta(n)
     print(rulet)
-    itemSelec = funGirarRuleta(rulet)    
-    print(itemSelec)
     
+    aux=0
+    listo = False
+    giro = 0.0
+    giro = np.random.rand()
+    while listo==False:
+        if giro <= rulet[aux]:
+            listo = True
+        else:
+            aux = aux+1  
+    itemSelec = aux
+    print(giro)
+    print(itemSelec)
+    print("a",solucion)
     if int(solucion[int(fitOrd[itemSelec][1])])==0:
         solucion[int(fitOrd[itemSelec][1])]=1
     else:
         solucion[int(fitOrd[itemSelec][1])]=0
-    
+    print("b",solucion)
     generacion+=1
 # ruleta = ruleta(n)
 # print(ruleta)
