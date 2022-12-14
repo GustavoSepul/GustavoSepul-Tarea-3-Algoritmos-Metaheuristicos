@@ -23,13 +23,14 @@
 
 - Para ejecutar el codigo se debe ejecutar el siguiente comando: 
 ```
-python ./mochila.py Seed Número_Iteraciones Tau Archivo_entrada
+python ./mochila.py Seed Número_Iteraciones Tau Archivo_entrada Archivo_Salida
 ```
 - Donde:
     - ***Seed***, el cuál sera un número real randomico mayor a 0.
     - ***Número_Iteraciones***, el cuál sera un número entero a criterio del usuario.
     - ***Tau***, el cuál sera un número real.
     - ***Archivo_entrada***, nombre del archivo con los valores y pesos de prueba (Prueba1.txt).
+    - ***Archivo_Salida***, nombre del archivo con la solución encontrada (Solucion1.txt).
 
 ## Ejemplo
 ```
