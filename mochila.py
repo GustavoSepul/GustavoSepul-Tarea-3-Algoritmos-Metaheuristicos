@@ -19,6 +19,8 @@ def calcular_peso(n,datos,sol):
     aux = 0
     for i in range(n):
         aux += (datos[i][1]) * sol[i]
+    print("peso",aux)
+    print("capacidad", c)
     return aux
 
 def factibilidad(n,datos,sol):
@@ -27,8 +29,18 @@ def factibilidad(n,datos,sol):
     else:
         return False
 
+def fitness_infact(sol, fitness):
+    fitness_infact = np.zeros((n,2))
+    for i in range(n):  
+        if sol[i] == 1: 
+            fitness_infact[i][0]= fitness[i][0]  
+            fitness_infact[i][1]= fitness[i][1]     
+    fitness_infact = np.delete(fitness_infact, np.where(fitness_infact[:, 0] == 0)[0], axis=0)
+    fitness_infact = fitness_infact[fitness_infact[:, 0].argsort()]
+    return fitness_infact
 
-if len(sys.argv) == 5:
+
+if len(sys.argv) == 5: #python.exe .\mochila.py 1 1 1.4 .\Prueba1.txt
     Seed = int(sys.argv[1])
     Iteraciones = int(sys.argv[2])
     Tau = float(sys.argv[3])
@@ -80,49 +92,58 @@ else:
     mejor_solucion = solucion
     mejor_solucion = np.zeros(n,dtype=int)
 
-#funcion fitness
-fitness = datos[:, 0]/datos[:, 1]
-# print(fitness)
-fitness = np.sort(fitness)
 
-# fitness2 = np.zeros((n,2))
-# for j in range(n):
-#     fitness2[j][0] = datos[j][0]/datos[j][1]
-#     fitness2[j][1] = j
-# print(fitness2)
-
+vector_prob = np.zeros(n)
+for i in range(n):
+    vector_prob[i] = (i+1)**(-Tau)
+# print(vector_prob)
 
 mejor_valor = calcular_valor(n,datos,mejor_solucion)
 # print(mejor_solucion)
 
 generacion = 0
 while generacion<Iteraciones:
-    rulet = ruleta(n)
+    fitness = np.zeros((n,2))
+    for j in range(n):
+        fitness[j][0] = datos[j][0]/datos[j][1]
+        fitness[j][1] = j
+        
+    if(factible == True):
+        print("fac")
+    else:
+        ordenado = fitness_infact(solucion,fitness)
+    # print("infac",ordenado)
+
+
+    rulet = ruleta(np.shape(ordenado)[0])
+    # print(np.shape(ordenado)[0])
     aux2=0
     rand = np.random.rand()
     # print(rulet)
     i=0
-    for i in range(0, n):
+    # print(rand)
+    for i in range(0, np.shape(ordenado)[0]):
         if rand > rulet[i]:
             aux2 = i
-    seleccionado = aux2        
-    # print(seleccionado)
-    if(solucion[seleccionado] == 0):
-        solucion[seleccionado] = 1
-        aux3 = 0
-        for i  in range(n):
-            aux3 += (datos[i][1])*solucion[i]
-        if(aux3 <= c):
-            solucion[seleccionado] = 0
+    seleccionado = aux2       
+    # print(seleccionado) 
+
+
+    # print(solucion)
+    print(int(ordenado[seleccionado][1]))
+    if(int(solucion[int(ordenado[seleccionado][1])]) == 0):
+        solucion[int(ordenado[seleccionado][1])] = 1
     else:
-            solucion[seleccionado] = 0
-            
+        solucion[int(ordenado[seleccionado][1])] = 0
+    # print(solucion)
+
     valor = calcular_valor(n,datos,solucion)
     factible = factibilidad(n,datos,solucion)
-    if (valor>mejor_valor):
+    if (valor>mejor_valor and factible==True):
         mejor_solucion = solucion
-        mejor_valor = calcular_valor(n,datos,mejor_solucion)
+        mejor_valor = valor
     generacion+=1
 
+print(generacion)
 print(mejor_solucion)
 print(mejor_valor)
