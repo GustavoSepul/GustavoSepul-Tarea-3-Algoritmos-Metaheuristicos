@@ -1,6 +1,6 @@
 # Tarea-3-Algoritmos-Metahuristicos
 ## Problema de la mochila con optimizacion extrema
-### El ***problema de la mochila***, es un problema de optimización combinatorio, es decir, que buscará la mejor solución entre un conjunto finito de posibles soluciones, el cual desarrollaremos implementando el método ***Extremal Optimization*** e Python.
+### El ***problema de la mochila***, es un problema de optimización combinatorio, es decir, que buscará la mejor solución entre un conjunto finito de posibles soluciones, el cual desarrollaremos implementando el método ***Extremal Optimization*** en Python.
 
 ## Programas utilizados 
 
