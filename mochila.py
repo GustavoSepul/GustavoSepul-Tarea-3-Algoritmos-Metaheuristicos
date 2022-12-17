@@ -19,8 +19,6 @@ def calcular_peso(n,datos,sol):
     aux = 0
     for i in range(n):
         aux += (datos[i][1]) * sol[i]
-    print("peso",aux)
-    print("capacidad", c)
     return aux
 
 def factibilidad(n,datos,sol):
@@ -39,16 +37,27 @@ def fitness_infact(sol, fitness):
     fitness_infact = fitness_infact[fitness_infact[:, 0].argsort()]
     return fitness_infact
 
+def fitness_fact(sol, fitness):
+    fitness_fact = np.zeros((n,2))
+    for i in range(n):  
+        if sol[i] == 0: 
+            fitness_fact[i][0]= fitness[i][0]  
+            fitness_fact[i][1]= fitness[i][1]     
+    fitness_fact = np.delete(fitness_fact, np.where(fitness_fact[:, 0] == 0)[0], axis=0)
+    fitness_fact = fitness_fact[fitness_fact[:, 0].argsort()]
+    fitness_fact=fitness_fact[::-1]
+    return fitness_fact
+
 
 if len(sys.argv) == 5: #python.exe .\mochila.py 1 1 1.4 .\Prueba1.txt
     Seed = int(sys.argv[1])
     Iteraciones = int(sys.argv[2])
     Tau = float(sys.argv[3])
     Archivo_entrada = str(sys.argv[4])
-    print('Semilla: ', Seed)
-    print('Numero iteraciones: ', Iteraciones)
-    print('Tau: ', Tau)
-    print('Matriz: ', Archivo_entrada)
+    # print('Semilla: ', Seed)
+    # print('Numero iteraciones: ', Iteraciones)
+    # print('Tau: ', Tau)
+    # print('Matriz: ', Archivo_entrada)
 
     if(Seed < 0):
         print("Error: El número de la semilla debe ser positivo\nIngrese un número de semilla positivo")
@@ -62,9 +71,6 @@ else:
     sys.exit(0)
 
 
-np.random.seed(Seed)
-
-
 datos = pd.read_table(Archivo_entrada, header=None, skiprows=5, sep=",", names=range(4), engine='python')
 datos = datos.drop(columns=3)
 datos = datos.drop(index=(len(datos)-1),axis=0)
@@ -76,74 +82,86 @@ datos2 = datos2.drop(columns =0,axis=1).to_numpy()
 n = datos2[0][0]
 c = datos2[1][0]
 z = datos2[2][0]
-# print(n)
-# print(c)
-# print(z)
-
-solucion = np.random.randint(2, size=n)
-# print(solucion)
-print(solucion)
+print("Numero de Elementos",n)
+print("Capacidad",c)
+print("Valor optimo",z)
 
 
-factible = factibilidad(n,datos,solucion)
-if(factible == True):
-    mejor_solucion = solucion
-else:
-    mejor_solucion = solucion
+
+
+for x in range(Seed):
+    
+    np.random.seed(x)
+    print(x)
+
+
+
+    solucion = np.random.randint(2, size=n)
     mejor_solucion = np.zeros(n,dtype=int)
+    # print("Solucion: ",solucion)
 
 
-vector_prob = np.zeros(n)
-for i in range(n):
-    vector_prob[i] = (i+1)**(-Tau)
-# print(vector_prob)
-
-mejor_valor = calcular_valor(n,datos,mejor_solucion)
-# print(mejor_solucion)
-
-generacion = 0
-while generacion<Iteraciones:
-    fitness = np.zeros((n,2))
-    for j in range(n):
-        fitness[j][0] = datos[j][0]/datos[j][1]
-        fitness[j][1] = j
-        
-    if(factible == True):
-        print("fac")
-    else:
-        ordenado = fitness_infact(solucion,fitness)
-    # print("infac",ordenado)
-
-
-    rulet = ruleta(np.shape(ordenado)[0])
-    # print(np.shape(ordenado)[0])
-    aux2=0
-    rand = np.random.rand()
-    # print(rulet)
-    i=0
-    # print(rand)
-    for i in range(0, np.shape(ordenado)[0]):
-        if rand > rulet[i]:
-            aux2 = i
-    seleccionado = aux2       
-    # print(seleccionado) 
-
-
-    # print(solucion)
-    print(int(ordenado[seleccionado][1]))
-    if(int(solucion[int(ordenado[seleccionado][1])]) == 0):
-        solucion[int(ordenado[seleccionado][1])] = 1
-    else:
-        solucion[int(ordenado[seleccionado][1])] = 0
-    # print(solucion)
-
-    valor = calcular_valor(n,datos,solucion)
     factible = factibilidad(n,datos,solucion)
-    if (valor>mejor_valor and factible==True):
+    if(factible == True):
         mejor_solucion = solucion
-        mejor_valor = valor
-    generacion+=1
+    else:
+        mejor_solucion = solucion
+        mejor_solucion = np.zeros(n,dtype=int)
 
-print(generacion)
-print(mejor_solucion)
-print(mejor_valor)
+
+    vector_prob = np.zeros(n)
+    for i in range(n):
+        vector_prob[i] = (i+1)**(-Tau)
+    # print(vector_prob)
+
+    mejor_valor = calcular_valor(n,datos,mejor_solucion)
+    # print(mejor_solucion)
+    generacion = 0
+    while generacion<Iteraciones and mejor_valor<z:
+        fitness = np.zeros((n,2))
+        for j in range(n):
+            fitness[j][0] = datos[j][0]/datos[j][1]
+            fitness[j][1] = j
+        ordenado = np.zeros((n,2))
+        if(factible == True):
+            ordenado = fitness_fact(solucion,fitness)
+            # print("fact")
+        else:
+            ordenado = fitness_infact(solucion,fitness)
+            # print("infact")
+        # print("orde",ordenado)
+
+        # print(np.shape(ordenado)[0])
+        rulet = ruleta(np.shape(ordenado)[0])
+        # print(np.shape(ordenado)[0])
+        aux2=0
+        rand = np.random.rand()
+        # print(rulet)
+        i=0
+        # print(rand)
+        seleccionado = 0
+        for i in range(0, np.shape(ordenado)[0]):
+            if rand > rulet[i]:
+                aux2 = i
+        seleccionado = aux2       
+        # print(seleccionado) 
+
+
+        # # print(solucion)
+        # print(int(ordenado[seleccionado][1]))
+        if(int(solucion[int(ordenado[seleccionado][1])]) == 0):
+            solucion[int(ordenado[seleccionado][1])] = 1
+        else:
+            solucion[int(ordenado[seleccionado][1])] = 0
+        # print(solucion)
+
+        valor = calcular_valor(n,datos,solucion)
+        factible = factibilidad(n,datos,solucion)
+        if (valor>mejor_valor and factible==True):
+            mejor_solucion = solucion
+            mejor_valor = valor
+        
+        generacion+=1
+    print(generacion)
+    print("Mejor Solucion: ",mejor_solucion)
+    print(mejor_valor)
