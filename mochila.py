@@ -163,5 +163,5 @@ for x in range(Seed):
         
         generacion+=1
     print(generacion)
-    print("Mejor Solucion: ",mejor_solucion)
+    #print("Mejor Solucion: ",mejor_solucion)
     print(mejor_valor)
