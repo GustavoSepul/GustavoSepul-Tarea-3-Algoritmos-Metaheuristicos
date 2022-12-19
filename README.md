@@ -34,7 +34,7 @@ python ./mochila.py Seed Número_Iteraciones Tau Archivo_entrada Archivo_Salida
 
 ## Ejemplo
 ```
-python.exe .\mochila.py 1 200 1.4 Prueba1.txt >> Tabla1.csv
+python.exe .\mochila.py 30 200 1.4 Prueba1.txt >> Tabla1.csv
 ```
 
 
